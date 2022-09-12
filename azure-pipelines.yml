@@ -25,4 +25,4 @@ stages:
           repository: 'test-docker'
           command: 'buildAndPush'
           Dockerfile: '$(Build.SourcesDirectory)/aspnet-mssql/app/aspnetapp/Dockerfile'
-          tags: 'samucasouza/test-docker'
+          tags: 'samucasouza/$(tag)'
