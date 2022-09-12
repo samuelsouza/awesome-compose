@@ -35,3 +35,11 @@ stages:
           containerRegistry: 'dockerHub'
           repository: 'samucasouza/test-docker'
           command: 'push'
+          
+      - task: DockerCompose@0
+        inputs:
+          containerregistrytype: 'Container Registry'
+          dockerRegistryEndpoint: 'dockerHub'
+          dockerComposeFile: '$(Build.SourcesDirectory)/compose.yml'
+          action: 'Run a Docker Compose command'
+          dockerComposeCommand: 'docker compose up -d'
