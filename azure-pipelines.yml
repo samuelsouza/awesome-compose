@@ -5,11 +5,6 @@
 trigger:
 - master
 
-parameters:
-- name: tag
-  type: string
-  default: 'samucasouza'
-
 resources:
 - repo: self
 
@@ -27,7 +22,7 @@ stages:
       - task: Docker@2
         inputs:
           containerRegistry: 'dockerHub'
-          repository: 'test-docker'
+          repository: 'samucasouza/test-docker'
           command: 'buildAndPush'
           Dockerfile: '$(Build.SourcesDirectory)/aspnet-mssql/app/aspnetapp/Dockerfile'
-          tags: '${{ parameters.tag }}'
+          tags: '${tag}'
