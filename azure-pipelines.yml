@@ -28,8 +28,7 @@ stages:
           containerRegistry: 'dockerHub'
           repository: 'docker-test'
           command: 'build'
-          Dockerfile: '**/aspnet-mssql/app/aspnetapp/Dockerfile'
-          buildContext: '$(Build.SourcesDirectory)'
+          Dockerfile: '$(Build.SourcesDirectory)/aspnet-mssql/app/aspnetapp/Dockerfile'
 
       - task: Docker@2
         inputs:
