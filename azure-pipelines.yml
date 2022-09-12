@@ -17,7 +17,7 @@ stages:
   jobs:
   - job: Build
     displayName: Build
-    pool:
+    pool: mac-agent
       vmImage: ubuntu-latest
     steps:
     - task: Docker@2
