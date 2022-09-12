@@ -19,15 +19,20 @@ stages:
     displayName: Build
     pool: mac-agent
     steps:
-    - task: Docker@2
-      inputs:
-        containerRegistry: 'dockerHub'
-        command: 'login'
-    
-    - task: Docker@2
-      inputs:
-        containerRegistry: 'dockerHub'
-        repository: 'samucasouza/test-docker'
-        command: 'buildAndPush'
-        Dockerfile: '$(Build.SourcesDirectory)/aspnet-mssql/app/aspnetapp/Dockerfile'
-        tags: '${tag}'
+- task: Docker@2
+  inputs:
+    containerRegistry: 'dockerHub'
+    command: 'login'
+- task: Docker@2
+  inputs:
+    containerRegistry: 'dockerHub'
+    repository: 'docker-test'
+    command: 'build'
+    Dockerfile: '/aspnet-mssql/app/aspnetapp/Dockerfile'
+    buildContext: '$(Build.SourcesDirectory)'
+
+- task: Docker@2
+  inputs:
+    containerRegistry: 'dockerHub'
+    repository: 'docker-test'
+    command: 'push'
