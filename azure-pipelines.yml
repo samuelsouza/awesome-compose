@@ -53,7 +53,8 @@ stages:
         inputs:
           containerregistrytype: 'Container Registry'
           dockerRegistryEndpoint: 'dockerHub'
-          dockerComposePath: '/home/azureuser/.docker/cli-plugins/docker-compose'
           dockerComposeFile: '$(Build.SourcesDirectory)/aspnet-mssql/compose.yaml'
+          projectName: 'samucasouza/test-docker'
           action: 'Run a Docker Compose command'
           dockerComposeCommand: 'up -d --force-recreate'
+          dockerComposePath: '/home/azureuser/.docker/cli-plugins/docker-compose'
