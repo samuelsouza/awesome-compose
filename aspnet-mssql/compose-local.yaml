@@ -1,6 +1,6 @@
 services:
   web:
-    image: app/aspnetapp:latest
+    build: app/aspnetapp
     ports:
       - 80:80
   db:
