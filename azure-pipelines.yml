@@ -22,6 +22,7 @@ stages:
       - task: Docker@2
         inputs:
           containerRegistry: 'dockerHub'
+          repository: 'samucasouza/test-docker'
           command: 'login'
       - task: Docker@2
         inputs:
@@ -29,17 +30,43 @@ stages:
           repository: 'samucasouza/test-docker'
           command: 'build'
           Dockerfile: '$(Build.SourcesDirectory)/aspnet-mssql/app/aspnetapp/Dockerfile'
+          tags: |
+            $(Build.BuildId)
+            latest
 
       - task: Docker@2
         inputs:
           containerRegistry: 'dockerHub'
           repository: 'samucasouza/test-docker'
           command: 'push'
-          
+          tags: |
+            $(Build.BuildId)
+            latest
+  
+  - job: Undeploy
+    displayName: Undeploy
+    dependsOn: Build
+    pool: Dev1
+    steps:
       - task: DockerCompose@0
         inputs:
           containerregistrytype: 'Container Registry'
           dockerRegistryEndpoint: 'dockerHub'
-          dockerComposeFile: '$(Build.SourcesDirectory)/compose.yml'
+          dockerComposePath: '/home/azureuser/.docker/cli-plugins/docker-compose'
+          dockerComposeFile: '$(Build.SourcesDirectory)/aspnet-mssql/compose.yaml'
           action: 'Run a Docker Compose command'
-          dockerComposeCommand: 'docker compose up -d'
+          dockerComposeCommand: ' -p samuelsouzaawesome-compose down'  
+            
+  - job: Deploy
+    displayName: Deploying
+    dependsOn: Undeploy
+    pool: Dev1
+    steps:
+      - task: DockerCompose@0
+        inputs:
+          containerregistrytype: 'Container Registry'
+          dockerRegistryEndpoint: 'dockerHub'
+          dockerComposePath: '/home/azureuser/.docker/cli-plugins/docker-compose'
+          dockerComposeFile: '$(Build.SourcesDirectory)/aspnet-mssql/compose.yaml'
+          action: 'Run a Docker Compose command'
+          dockerComposeCommand: 'up -d'
