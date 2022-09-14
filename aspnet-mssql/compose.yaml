@@ -1,6 +1,6 @@
 services:
   web:
-    build: app/aspnetapp
+    image: samucasouza/test-docker:latest
     ports:
       - 80:80
   db:
