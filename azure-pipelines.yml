@@ -28,7 +28,7 @@ stages:
       - task: Docker@2
         inputs:
           containerRegistry: 'dockerHub'
-          repository: 'samucasouza/test-docker'''
+          repository: 'samucasouza/test-docker'
           command: 'build'
           Dockerfile: '$(Build.SourcesDirectory)/aspnet-mssql/app/aspnetapp/Dockerfile'
           tags: |
