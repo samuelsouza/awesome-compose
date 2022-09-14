@@ -32,6 +32,9 @@ stages:
           dockerComposeFile: '$(Build.SourcesDirectory)/aspnet-mssql/compose.yaml'
           action: 'Run a Docker Compose command'
           dockerComposeCommand: 'build'
+          additionalImageTags: |
+            $(Build.BuildId)
+            latest
 
       - task: Docker@2
         inputs:
