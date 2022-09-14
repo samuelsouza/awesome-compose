@@ -25,15 +25,15 @@ stages:
           repository: 'samucasouza/test-docker'
           command: 'login'
           
-      - task: DockerCompose@0
+      - task: Docker@2
         inputs:
-          containerregistrytype: 'Container Registry'
-          dockerRegistryEndpoint: 'dockerHub'
-          dockerComposeFile: '$(Build.SourcesDirectory)/aspnet-mssql/compose.yaml'
-          action: 'Run a Docker Compose command'
-          dockerComposeCommand: 'build'
-          includeLatestTag: true
-          additionalImageTags: $(Build.BuildId)
+          containerRegistry: 'dockerHub'
+          repository: 'samucasouza/test-docker'''
+          command: 'buildAndPush'
+          Dockerfile: '$(Build.SourcesDirectory)/aspnet-mssql/app/aspnetapp/Dockerfile'
+          tags: |
+            $(Build.BuildId)
+            latest
 
       - task: Docker@2
         inputs:
