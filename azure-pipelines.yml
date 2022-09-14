@@ -17,7 +17,7 @@ stages:
   jobs:
   - job: Build
     displayName: Build
-    pool: mac-agent
+    pool: Dev1
     steps:
       - task: Docker@2
         inputs:
