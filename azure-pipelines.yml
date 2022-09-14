@@ -29,7 +29,7 @@ stages:
         inputs:
           containerRegistry: 'dockerHub'
           repository: 'samucasouza/test-docker'''
-          command: 'buildAndPush'
+          command: 'build'
           Dockerfile: '$(Build.SourcesDirectory)/aspnet-mssql/app/aspnetapp/Dockerfile'
           tags: |
             $(Build.BuildId)
