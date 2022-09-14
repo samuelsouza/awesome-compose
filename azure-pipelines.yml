@@ -44,7 +44,7 @@ stages:
             $(Build.BuildId)
             latest
             
-    - job: Deploy
+  - job: Deploy
     displayName: Deploying
     dependsOn: Build
     pool: Dev1
