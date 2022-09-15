@@ -15,7 +15,7 @@ stages:
 - stage: Build
   displayName: Build image
   jobs:
-  - job: Deploy
+  - job: Deploy1
     displayName: DeployVMProd1
     pool: VMProd1
     steps:
@@ -29,17 +29,17 @@ stages:
           dockerComposeCommand: 'up -d --force-recreate'
           dockerComposePath: '/home/azureuser/.docker/cli-plugins/docker-compose'
 
-  - job: Deploy
-      displayName: DeployVMProd2
-      dependsOn: Deploy
-      pool: VMProd2
-      steps:
-        - task: DockerCompose@0
-          inputs:
-            containerregistrytype: 'Container Registry'
-            dockerRegistryEndpoint: 'dockerHub'
-            dockerComposeFile: '$(Build.SourcesDirectory)/aspnet-mssql/compose.yaml'
-            projectName: 'samucasouza/test-docker'
-            action: 'Run a Docker Compose command'
-            dockerComposeCommand: 'up -d --force-recreate'
-            dockerComposePath: '/home/azureuser/.docker/cli-plugins/docker-compose'
+  - job: Deploy2
+    displayName: DeployVMProd2
+    dependsOn: Deploy1
+    pool: VMProd2
+    steps:
+      - task: DockerCompose@0
+        inputs:
+          containerregistrytype: 'Container Registry'
+          dockerRegistryEndpoint: 'dockerHub'
+          dockerComposeFile: '$(Build.SourcesDirectory)/aspnet-mssql/compose.yaml'
+          projectName: 'samucasouza/test-docker'
+          action: 'Run a Docker Compose command'
+          dockerComposeCommand: 'up -d --force-recreate'
+          dockerComposePath: '/home/azureuser/.docker/cli-plugins/docker-compose'
