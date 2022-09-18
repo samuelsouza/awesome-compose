@@ -68,6 +68,7 @@ stages:
             # Write your commands here
             
             echo 'Enable log aggregation'
+            rm -r epilog -f
             git clone https://github.com/rednafi/epilog.git
             cd epilog
             make up
