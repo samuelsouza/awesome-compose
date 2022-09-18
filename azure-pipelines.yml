@@ -5,6 +5,8 @@
 trigger:
   - Dev1
 
+pr: none
+
 resources:
 - repo: self
 
