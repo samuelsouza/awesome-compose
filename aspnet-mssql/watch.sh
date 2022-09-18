@@ -6,5 +6,5 @@
 # e.g. brew install fswatch
 
 # watch for changes on the current folder or subdirectories
-
+#test
 fswatch -oxr `pwd` | xargs -n1 -I{} ./docker_rebuild.sh
