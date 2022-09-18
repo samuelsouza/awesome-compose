@@ -33,7 +33,7 @@ tar zxvf vsts-agent-linux-x64-2.210.1.tar.gz
 # Y
 # https://dev.azure.com/samuel1987/
 # PAT
-# <token> xumstryn26upppjlacze46inyxusrj67wlsf3bh36eg25xh4w3va
+# <token>
 # VMProd1/VMProd2
 # VMProd1/VMProd2
 # _work
