@@ -3,9 +3,13 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/docker
 
 trigger:
-- dev1
-  pr:none
-
+  pr:
+    branches:
+      include:
+      - dev1
+      exclude:
+      - prod
+  
 resources:
 - repo: self
 
