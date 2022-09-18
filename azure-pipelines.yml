@@ -2,12 +2,10 @@
 # Build a Docker image
 # https://docs.microsoft.com/azure/devops/pipelines/languages/docker
 
-pr:
-  branches:
-    include:
-      - dev1
-    exclude:
-      - prod
+trigger:
+  - Dev1
+
+pr: none
   
 resources:
 - repo: self
