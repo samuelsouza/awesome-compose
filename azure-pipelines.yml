@@ -4,7 +4,7 @@
 
 trigger:
   - Dev1
-  
+
 resources:
 - repo: self
 
