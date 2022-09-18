@@ -1,3 +1,62 @@
+## Env Setup
+The basic flow and development cycle follows the GitOps approach, promoting the releases across branches:
+
+```Local -> Dev1 -> Prod```
+
+Consequently, there are two slighlty different Azure DevOps pipelines, listed on the project [aspnet-mssql-Tenable](https://dev.azure.com/samuel1987/aspnet-mssql-Tenable/):
+- [Dev1-samuelsouza.awesome-compose](https://github.com/samuelsouza/awesome-compose/blob/dev1/azure-pipelines.yml)
+- [Prod-samuelsouza.awesome-compose](https://github.com/samuelsouza/awesome-compose/blob/dev1/azure-pipelines-1.yml)
+
+Respectively, there are 3 Azure agents on 3 Pools: Dev1, VMProd1 and VMProd2. (The agents are currently stopped, because Azure DevOps project is public).
+
+And two environments:
+for simplicity, I have generated certs only for prod.
+- [http://dev.samuelsouza.com](http://dev.samuelsouza.com)
+- [https://prod.samuelsouza.com](https://prod.samuelsouza.com) 
+
+Dev environment is a VM setup on Azure cloud. It is described on this [ARM Template](https://github.com/samuelsouza/awesome-compose/blob/dev1/aspnet-mssql/VM.template.json). VM configuration was supposed to be an ansible script, but for lack of time I only listed the commands on a script-like file, [vmConfiguration.sh](https://github.com/samuelsouza/awesome-compose/blob/dev1/aspnet-mssql/vmConfiguration.sh)
+
+Prod environment, contains 2 VMs (they follow the same template as Dev), but they are behind a Application Gateway ([ARM Tempalte](https://github.com/samuelsouza/awesome-compose/blob/dev1/aspnet-mssql/LB.template.json)), that loadbalances the load between the hosts and add a certain degree of resiliance, allowing near zero down-time deployments.
+
+Prod env is hosting valid certs issued by [Let's encrypt certbot](https://certbot.eff.org/), they are installed directly on the loadbalancer:
+
+```sudo certbot certonly --standalone```
+
+Both envs are configured on subdomains. As fallows:
+```
+dev.samuelsouza.com.	843	A	20.56.144.109
+prod.samuelsouza.com.	843	A	20.111.19.229
+```
+
+View from Azure Portal Prod Setup
+
+![AzurePortal](azureportal.png)
+
+## CI/CD Process
+
+Local environment is monitoring the project folder for changes with a [script](https://github.com/samuelsouza/awesome-compose/blob/dev1/aspnet-mssql/watch.sh) (for MacOS). Upon changes, it dispaches the rebuild process as described on [compose-local.yaml](https://github.com/samuelsouza/awesome-compose/blob/dev1/aspnet-mssql/compose-local.yaml). The new service version will become available on localhost:80. The script can also start test frameworks, at the moment, we simply check the deployment with a cURL request.
+
+**Start the monitoring script**
+
+```./watch.sh```
+
+Pushing changes to Dev1. Once tested locally, the changes can be integrated to the test environment (Dev1). The pipeline will be triggered upon commit. It will build the image as described on compose-local.yaml and publish the container image to the DockerHub registry, project accessible [here](https://hub.docker.com/repository/docker/samucasouza/test-docker). Pipeline also enriches the environment adding a tool for log aggregation, I used the ready-to-go project [dozzle](https://dozzle.dev/). The UI is mapped to the port 8888, or [Here](http://dev.samuelsouza.com:8888/).
+
+To push the changes to Prod Pull-request is required, prod is a protected branch on github. The pipeline, alongside with the Application Gateway Loadbalancer, acts together to allow a deployment on a near zero-downtime rolling deployment. It calls for [compose.yaml](https://github.com/samuelsouza/awesome-compose/blob/dev1/aspnet-mssql/compose.yaml) twice, once for each VMProd agent, the rolling update alongside with localbalancer realtime health checks, allow the traffic to be redirected to live and most recent instances.
+
+Full CI/CD process:
+
+![CI/CD](cicd.png)
+
+
+
+
+
+
+
+
+
+--- Original Readme
 ## Compose sample application: ASP.NET with MS SQL server database
 
 Project structure:
