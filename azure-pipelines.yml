@@ -67,5 +67,6 @@ stages:
           script: |
             # Write your commands here
             echo 'Enable log aggregation'
+            docker rm dozzle
             docker pull amir20/dozzle:latest
             docker run --name dozzle -d --volume=/var/run/docker.sock:/var/run/docker.sock -p 8888:8080 amir20/dozzle:latest
